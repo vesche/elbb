@@ -154,6 +154,12 @@ def select_walk():
         click()
 
 
+def select_look():
+    if locate(UI.Look.Unselected):
+        move_to(UI.Look.Unselected)
+        click()
+
+
 def eat(food, storage_mode=False):
     can_eat = False
 
@@ -175,9 +181,59 @@ def eat(food, storage_mode=False):
         return False
 
 
+def toggle_console():
+    pyautogui.press('f1')
+
+
+def ocr(x, y, dx, dy):
+    ss = pyautogui.screenshot(region=(x, y, dx, dy))
+    return pytesseract.image_to_string(ss)
+
+
 def get_manufacture_status():
     m_location = locate(UI.Manufacture.Banner)
-    x = m_location.left - 245
-    y = m_location.top + 175
-    ss = numpy.array(pyautogui.screenshot(region=(x, y, 600, 85)))
-    return pytesseract.image_to_string(ss)
+    return ocr(m_location.left-245, m_location.top+175, 600, 85)
+
+
+def get_inventory_text():
+    select_look()
+
+    inventory = list()
+    inventory_location = locate(UI.Inventory.Banner)
+    init_x = x = inventory_location.left - 150
+    y = inventory_location.top + 45
+
+    for i in range(36):
+        move_mouse(x, y)
+        click()
+
+        text = ocr(inventory_location.left-175, inventory_location.top+325, 450, 100)
+        inventory.append({
+            'text': text,
+            'location': (x, y)
+        })
+
+        # TODO: Fix this later? (breaks on duplicate item)
+        if i != 0:
+            if inventory[i]['text'] == inventory[i-1]['text']:
+                break
+
+        if (i+1) % 6 == 0:
+            x = init_x
+            y += 50
+        else:
+            x += 50
+
+    return inventory
+
+
+def get_book_status():
+    cd_location = locate(UI.Countdown.Marker)
+    move_mouse(cd_location.left + random.randint(20, 80), cd_location.top + 38)
+    click()
+
+    toggle_console()
+    cm_location = locate(UI.Console.Marker)
+    text = ocr(cm_location.left, cm_location.top-72, 1776, 30)
+    toggle_console()
+    return text

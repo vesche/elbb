@@ -55,3 +55,27 @@ def auto_fire_essence_loop():
             engine.click()
         elif 'Nothing' in status:
             break
+
+
+def auto_read():
+    inventory = engine.get_inventory_text()
+
+    while True:
+        if engine.locate(UI.Food.NegativeA) or engine.locate(UI.Food.NegativeB):
+            engine.eat(Items.Vegetables)
+
+        book_status = engine.get_book_status()
+        print(book_status)
+
+        if 'anything' in book_status:
+            for i in inventory:
+                if 'Book' in i['text']:
+                    engine.select_use()
+                    engine.move_mouse(*i['location'])
+                    engine.click()
+                    inventory.remove(i)
+                    break
+            else:
+                return
+
+        time.sleep(random.randint(100, 300))

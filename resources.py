@@ -4,9 +4,27 @@ class UI:
     UI Resources
     """
 
+    class Console:
+        class Marker:
+            path = 'images/console_marker.png'
+
+    class Countdown:
+        class Marker:
+            path = 'images/countdown_marker.png'
+
+    class Food:
+        class NegativeA:
+            path = 'images/food_negative_a.png'
+        class NegativeB:
+            path = 'images/food_negative_b.png'
+
     class Inventory:
         class Banner:
             path = 'images/inventory_banner.png'
+
+    class Look:
+        class Unselected:
+            path = 'images/look_unselected.png'
 
     class Manufacture:
         class Banner:
