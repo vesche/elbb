@@ -127,9 +127,9 @@ def move_storage_to_inventory(item, n=1):
 
 def create_cooldown(name, seconds):
     COOLDOWNS[name] = seconds
-    for _ in range(50):
+    for _ in range(seconds):
         time.sleep(1)
-        COOLDOWNS[name] -= 1
+        seconds -= 1
     COOLDOWNS.pop(name)
 
 
@@ -170,7 +170,7 @@ def eat(food, storage_mode=False):
         select_use()
         move_to(food.Inventory)
         click()
-        start_cooldown(type(food).__name__, food.cooldown)
+        start_cooldown(food.__name__, food.cooldown)
     else:
         return False
 
