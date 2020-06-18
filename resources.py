@@ -22,6 +22,10 @@ class UI:
         class Banner:
             path = 'images/inventory_banner.png'
 
+    class Logo:
+        class Marker:
+            path = 'images/logo_marker.png'
+
     class Look:
         class Unselected:
             path = 'images/look_unselected.png'

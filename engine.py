@@ -236,4 +236,7 @@ def get_book_status():
     cm_location = locate(UI.Console.Marker)
     text = ocr(cm_location.left, cm_location.top-72, 1776, 30)
     toggle_console()
+
+    move_to(UI.Logo.Marker)
+
     return text

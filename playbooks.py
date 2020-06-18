@@ -78,4 +78,4 @@ def auto_read():
             else:
                 return
 
-        time.sleep(random.randint(100, 300))
+        time.sleep(random.randint(45, 75))
