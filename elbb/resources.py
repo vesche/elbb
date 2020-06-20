@@ -1,3 +1,5 @@
+"""elbb.resources"""
+
 
 class UI:
     """

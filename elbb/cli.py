@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+"""elbb.cli"""
+
+import server
+import threading
 
 from pick import pick
 from playbooks import start_auto_fire_essence, auto_read

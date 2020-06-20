@@ -1,3 +1,5 @@
+"""elbb.engine"""
+
 import time
 import numpy
 import scipy
@@ -6,8 +8,10 @@ import pyautogui
 import threading
 import pytesseract
 
+from queue import log
+from resources import UI
 from scipy import interpolate
-from resources import Items, UI
+
 
 COOLDOWNS = dict()
 
@@ -81,11 +85,14 @@ def move_to(image):
 
 
 def move_inventory_to_storage(item, n=1):
+    log(f'Moving {item.__name__} from inventory to storage...')
+
     select_walk()
 
     # click the item in the inventory
-    success = move_to(item)
+    success = move_to(item.Inventory)
     if not success:
+        log(f'Could not find {item.__name__} in the inventory!', category='bad')
         return False
     click()
 
@@ -96,10 +103,14 @@ def move_inventory_to_storage(item, n=1):
     move_mouse(x_sto+rx, y_sto+ry)
     click(n)
     pyautogui.click(button='right')
+
+    log(f'{item.__name__} moved to storage.', category='good')
     return True
 
 
 def move_storage_to_inventory(item, n=1):
+    log(f'Moving {item.__name__} from storage to inventory...')
+
     select_walk()
 
     # click the correct storage menu for the item
@@ -110,6 +121,7 @@ def move_storage_to_inventory(item, n=1):
     # click the item in the storage
     success = move_to(item.Storage)
     if not success:
+        log(f'Could not find {item.__name__} in the storage!', category='bad')
         return False
     # small sleep here to reduce misclicking
     time.sleep(random.uniform(0.1, 0.2))
@@ -122,6 +134,8 @@ def move_storage_to_inventory(item, n=1):
     move_mouse(x_inv+rx, y_inv+ry)
     click(n)
     pyautogui.click(button='right')
+
+    log(f'{item.__name__} moved to storage.', category='good')
     return True
 
 
@@ -177,6 +191,7 @@ def eat(food, storage_mode=False):
         move_to(food.Inventory)
         click()
         start_cooldown(food.__name__, food.cooldown)
+        log(f'Ate {food.__name__}.', category='good')
     else:
         return False
 
@@ -192,10 +207,14 @@ def ocr(x, y, dx, dy):
 
 def get_manufacture_status():
     m_location = locate(UI.Manufacture.Banner)
-    return ocr(m_location.left-245, m_location.top+175, 600, 85)
+    m_text = ocr(m_location.left-245, m_location.top+175, 600, 85)
+    log(f'Got manufacture status: {m_text}')
+    return m_text
 
 
 def get_inventory_text():
+    log('Scanning inventory...')
+
     select_look()
 
     inventory = list()
@@ -224,6 +243,7 @@ def get_inventory_text():
         else:
             x += 50
 
+    log('Finished scanning inventory.', category='good')
     return inventory
 
 
@@ -239,4 +259,5 @@ def get_book_status():
 
     move_to(UI.Logo.Marker)
 
+    log(f'Got book status: {text}')
     return text

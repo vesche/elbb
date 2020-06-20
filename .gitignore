@@ -1,1 +1,6 @@
 *.pyc
+DEV.md
+my.json
+.vscode/
+
+client/tmp/
