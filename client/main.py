@@ -15,7 +15,6 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 r.delete('command')
 r.delete('messages')
 
-
 with open('my.json', 'r') as f:
     bots = json.loads(f.read())
 
