@@ -14,6 +14,7 @@ executor = ThreadPoolExecutor(2)
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 r.delete('command')
+r.delete('messages')
 
 
 with open('my.json', 'r') as f:
@@ -36,6 +37,19 @@ def bot(bot_name):
 def command():
     r.set('command', request.form['command'])
     return ('', 204)
+
+
+@app.route('/messages')
+def messages():
+    m_tmp = str()
+
+    while True:    
+        m = r.lpop('messages')
+        if not m:
+            break
+        m_tmp += m.decode('utf-8') + ' | '
+
+    return m_tmp.rstrip(' | ')
 
 
 if __name__ == '__main__':

@@ -19,7 +19,8 @@ def run_bot(ws):
 
 def on_message(ws, message):
     # do things...
-    print(message.rstrip())
+    r.lpush('messages', message.rstrip())
+    # print(message.rstrip())
 
 
 def on_open(ws):

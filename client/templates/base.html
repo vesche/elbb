@@ -6,8 +6,8 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <img src="{{ url_for('static', filename='elbb_logo.png')}}">
-        <img src="{{ url_for('static', filename='el_logo.png')}}" style="float: right;">
+        <img src="{{ url_for('static', filename='elbb_logo.png') }}">
+        <img src="{{ url_for('static', filename='el_logo.png') }}" style="float: right;">
         <br><br>
         {% block body %}{% endblock %}
     </body>
