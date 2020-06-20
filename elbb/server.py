@@ -4,6 +4,7 @@ import json
 import asyncio
 import threading
 
+from meta import BANNER
 from queue import get_queue, clear_queue
 from playbooks import start_auto_fire_essence, auto_read
 
@@ -57,6 +58,7 @@ async def elbb_connect(request, ws):
 
 
 def start():
+    print(BANNER)
     app.run(port=1337, protocol=WebSocketProtocol)
 
 
