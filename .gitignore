@@ -4,6 +4,5 @@ build/
 dist/
 *.egg-info/
 
-client/tmp/
 DEV.md
 my.json

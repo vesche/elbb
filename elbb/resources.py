@@ -4,6 +4,7 @@ import os
 
 pwd = os.path.abspath(os.path.dirname(__file__))
 
+
 def resolve(image):
     return os.path.join(pwd, f'images/{image}')
 

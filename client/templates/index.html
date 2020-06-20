@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<center>
+    <div class="container">
+        {% for bot, bot_data in bots.items() %}
+        <a href="bot/{{ bot }}">
+            <div class="box">
+                <br><br>
+                {{ bot }}
+                <br>
+                {{ bot_data['ip'] }}
+                <br>
+                ({{ bot_data['username'] }})
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</center>
+
+{% endblock %}
