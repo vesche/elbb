@@ -5,7 +5,13 @@ from elbb.meta import VERSION
 
 setup(
     name='elbb',
-    packages=['elbb'],
+    packages=[
+        'elbb',
+        'elbb.images'
+    ],
+    package_data = {
+        'elbb.images': ['*.png']
+    },
     version=VERSION,
     description='beep boop',
     license='Unlicense',
@@ -14,11 +20,10 @@ setup(
     author_email='vesche@protonmail.com',
     entry_points={
         'console_scripts': [
-            'elbb = elbb.cli:main',
+            'elbb = elbb.server:start',
         ]
     },
     install_requires=[
-        'crayons',
         'filelock',
         'numpy',
         'pyautogui',

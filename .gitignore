@@ -1,6 +1,9 @@
 *.pyc
-DEV.md
-my.json
 .vscode/
+build/
+dist/
+*.egg-info/
 
 client/tmp/
+DEV.md
+my.json

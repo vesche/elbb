@@ -1,5 +1,12 @@
 """elbb.resources"""
 
+import os
+
+pwd = os.path.abspath(os.path.dirname(__file__))
+
+def resolve(image):
+    return os.path.join(pwd, f'images/{image}')
+
 
 class UI:
     """
@@ -8,57 +15,57 @@ class UI:
 
     class Console:
         class Marker:
-            path = 'images/console_marker.png'
+            path = resolve('console_marker.png')
 
     class Countdown:
         class Marker:
-            path = 'images/countdown_marker.png'
+            path = resolve('countdown_marker.png')
 
     class Food:
         class NegativeA:
-            path = 'images/food_negative_a.png'
+            path = resolve('food_negative_a.png')
         class NegativeB:
-            path = 'images/food_negative_b.png'
+            path = resolve('food_negative_b.png')
 
     class Inventory:
         class Banner:
-            path = 'images/inventory_banner.png'
+            path = resolve('inventory_banner.png')
 
     class Logo:
         class Marker:
-            path = 'images/logo_marker.png'
+            path = resolve('logo_marker.png')
 
     class Look:
         class Unselected:
-            path = 'images/look_unselected.png'
+            path = resolve('look_unselected.png')
 
     class Manufacture:
         class Banner:
-            path = 'images/manufacture_banner.png'
+            path = resolve('manufacture_banner.png')
         class MixAll:
-            path = 'images/manufacture_mix_all.png'
+            path = resolve('manufacture_mix_all.png')
 
     class Storage:
         class Banner:
-            path = 'images/storage_banner.png'
+            path = resolve('storage_banner.png')
         class Flowers:
-            path = 'images/storage_flowers.png'
+            path = resolve('storage_flowers.png')
         class Food:
-            path = 'images/storage_food.png'
+            path = resolve('storage_food.png')
         class Minerals:
-            path = 'images/storage_minerals.png'
+            path = resolve('storage_minerals.png')
 
     class Use:
         class Selected:
             path = None
         class Unselected:
-            path = 'images/use_unselected.png'
+            path = resolve('use_unselected.png')
 
     class Walk:
         class Selected:
             path = None
         class Unselected:
-            path = 'images/walk_unselected.png'
+            path = resolve('walk_unselected.png')
 
 
 class Items:
@@ -69,35 +76,35 @@ class Items:
     class FireEssence:
         storage_menu = None
         class Inventory:
-            path = 'images/fire_essence_inventory.png'
+            path = resolve('fire_essence_inventory.png')
         class Storage:
             path = None
 
     class RedRose:
         storage_menu = UI.Storage.Flowers
         class Inventory:
-            path = 'images/rose_inventory.png'
+            path = resolve('rose_inventory.png')
         class Storage:
-            path = 'images/rose_storage.png'
+            path = resolve('rose_storage.png')
 
     class RedSnapdragons:
         storage_menu = UI.Storage.Flowers
         class Inventory:
-            path = 'images/snapdragon_inventory.png'
+            path = resolve('snapdragon_inventory.png')
         class Storage:
-            path = 'images/snapdragon_storage.png'
+            path = resolve('snapdragon_storage.png')
 
     class Sulfur:
         storage_menu = UI.Storage.Minerals
         class Inventory:
-            path = 'images/sulfur_inventory.png'
+            path = resolve('sulfur_inventory.png')
         class Storage:
-            path = 'images/sulfur_storage.png'
+            path = resolve('sulfur_storage.png')
 
     class Vegetables:
         cooldown = 50
         storage_menu = UI.Storage.Food
         class Inventory:
-            path = 'images/vegetables_inventory.png'
+            path = resolve('vegetables_inventory.png')
         class Storage:
-            path = 'images/vegetables_storage.png'
+            path = resolve('vegetables_storage.png')

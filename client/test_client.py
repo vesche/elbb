@@ -5,7 +5,7 @@ import websocket
 
 
 def doitup(ws):
-    data = {'command': 'auto_fire_essence'}
+    data = {'command': 'auto_read'}
 
     while True:
         if data:

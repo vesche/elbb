@@ -2,10 +2,10 @@
 
 import time
 import random
-import engine
 
-from queue import log
-from resources import Items, UI
+from elbb import engine
+from elbb.queue import log
+from elbb.resources import Items, UI
 
 HUNGRY = False
 

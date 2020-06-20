@@ -8,10 +8,10 @@ import pyautogui
 import threading
 import pytesseract
 
-from queue import log
-from resources import UI
 from scipy import interpolate
 
+from elbb.queue import log
+from elbb.resources import UI
 
 COOLDOWNS = dict()
 
@@ -20,6 +20,7 @@ def locate(image):
     location = pyautogui.locateOnScreen(
         image.path,
         region=(1920, 40, 1920, 1040),
+        # region=(0, 40, 1920, 1040),
         grayscale=True
     )
     return location
