@@ -5,7 +5,6 @@ import redis
 
 from flask import Flask, request, render_template
 from concurrent.futures import ThreadPoolExecutor
-# from flask_socketio import SocketIO, emit
 
 from client import start_bot
 
