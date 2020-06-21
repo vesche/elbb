@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 PATH=$PATH:~/.local/bin
-GAMECLIENT='eternallands'
+GAMECLIENT='gameclient'
 export PATH
 export GAMECLIENT
 
