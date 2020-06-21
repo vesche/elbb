@@ -215,7 +215,7 @@ def ocr(x, y, dx, dy):
 
 def get_manufacture_status():
     m_location = locate(UI.Manufacture.Banner)
-    m_text = ocr(m_location.left-245, m_location.top+175, 600, 85)
+    m_text = ocr(m_location.left-160, m_location.top+113, 400, 16)
     log(f'Got manufacture status: {m_text}')
     return m_text
 

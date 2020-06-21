@@ -59,10 +59,9 @@ Notes for later full automation of elbb deployment on Linode.
     * elbb
         * `git clone https://github.com/vesche/elbb && cd elbb/`
         * `sudo pacman -S pip tk scrot which tesseract`
-        * `curl -O https://raw.githubusercontent.com/tesseract-ocr/tessdata/4.00/eng.traineddata`
-        * `sudo mv eng.traineddata /usr/share/tessdata`
+        * `sudo cp tools/eng.traineddata /usr/share/tessdata`
         * `python setup.py install --user`
-        * .bashrc
+        * `vim ~/.bashrc`
             * `PATH=$PATH:~/.local/bin`
             * `GAMECLIENT='<game_executable>'`
         * `sudo iptables -A INPUT -p tcp --dport 51337 --source <src_ip>/32 -j ACCEPT`

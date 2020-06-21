@@ -3,7 +3,4 @@
 build/
 dist/
 *.egg-info/
-
-DEV.md
 my.json
-bak/
