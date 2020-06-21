@@ -32,7 +32,7 @@ def main():
     print(x2, y2)
 
     img = pyautogui.screenshot(region=(x1, y1, x2-x1, y2-y1))
-    img.save('images/' + filename)
+    img.save(filename)
 
 
 if __name__ == '__main__':

@@ -6,4 +6,4 @@ x2 = 2059
 y2 = 1077
 
 img = pyautogui.screenshot(region=(x1, y1, x2-x1, y2-y1))
-img.save('images/look_unselected.png')
+img.save('foo.png')

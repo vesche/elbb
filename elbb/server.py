@@ -16,9 +16,6 @@ app = Sanic(name='elbb')
 
 
 async def _consumer_handler(ws):
-    # launch game client if it's not already
-    launch_client()
-
     while True:
         data = await ws.recv()
         data = json.loads(data)
@@ -50,6 +47,9 @@ async def _producer_handler(ws):
 
 @app.websocket('/elbb_connect')
 async def elbb_connect(request, ws):
+    # launch game client (if it's not already running)
+    launch_client()
+
     while True:
         consumer_task = asyncio.ensure_future(_consumer_handler(ws))
         producer_task = asyncio.ensure_future(_producer_handler(ws))

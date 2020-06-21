@@ -26,7 +26,7 @@ def launch_client():
 def locate(image):
     location = pyautogui.locateOnScreen(
         image.path,
-        region=(1920, 40, 1920, 1040),
+        # region=(1920, 40, 1920, 1040),
         # region=(0, 40, 1920, 1040),
         grayscale=True
     )
