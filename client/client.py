@@ -29,7 +29,7 @@ def on_open(ws):
 
 def start_bot(ip):
     ws = websocket.WebSocketApp(
-        f'ws://{ip}:1337/elbb_connect',
+        f'ws://{ip}:51337/elbb_connect',
         on_message=on_message
     )
     ws.on_open = on_open

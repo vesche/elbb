@@ -5,6 +5,7 @@ import asyncio
 import threading
 
 from elbb.meta import BANNER
+from elbb.engine import launch_client
 from elbb.queue import get_queue, clear_queue
 from elbb.playbooks import start_auto_fire_essence, auto_read
 
@@ -15,6 +16,9 @@ app = Sanic(name='elbb')
 
 
 async def _consumer_handler(ws):
+    # launch game client if it's not already
+    launch_client()
+
     while True:
         data = await ws.recv()
         data = json.loads(data)

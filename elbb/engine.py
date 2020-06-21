@@ -1,5 +1,6 @@
 """elbb.engine"""
 
+import os
 import time
 import numpy
 import scipy
@@ -14,6 +15,12 @@ from elbb.queue import log
 from elbb.resources import UI
 
 COOLDOWNS = dict()
+
+
+def launch_client():
+    game_client = os.environ['GAMECLIENT']
+    if not os.popen(f'pgrep -f {game_client}').read():
+        os.system(f'{game_client} &')
 
 
 def locate(image):
