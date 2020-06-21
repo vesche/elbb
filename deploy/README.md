@@ -58,7 +58,9 @@ Notes for later full automation of elbb deployment on Linode.
         * save
     * elbb
         * `git clone https://github.com/vesche/elbb && cd elbb/`
-        * `sudo pacman -S pip tk scrot which`
+        * `sudo pacman -S pip tk scrot which tesseract`
+        * `curl -O https://raw.githubusercontent.com/tesseract-ocr/tessdata/4.00/eng.traineddata`
+        * `sudo mv eng.traineddata /usr/share/tessdata`
         * `python setup.py install --user`
         * .bashrc
             * `PATH=$PATH:~/.local/bin`
