@@ -6,7 +6,7 @@ function fetchdata(){
             if (messages) {
                 let textArea = $('#mTextArea');
                 for (message of messages.split(' | ')) {
-                    textArea.val(textArea.val() + message + '\n');
+                    textArea.val(message + '\n' + textArea.val());
                 }
             }
         }

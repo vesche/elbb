@@ -64,6 +64,22 @@ body {
 	border-top: 1px solid #aaa;
 }
 
+#left-side {
+	position: relative;
+	float: left;
+	width: 20%;
+	height: 100%;
+	z-index: 1010101010
+}
+
+#right-side {
+	position: relative;
+	float: left;
+	width: 20%;
+	height: 100%;
+	z-index: 1010101010
+}
+
 p {
 	font-size: 16px;
 }
