@@ -84,16 +84,16 @@ class Items:
     class RedRose:
         storage_menu = UI.Storage.Flowers
         class Inventory:
-            path = resolve('rose_inventory.png')
+            path = resolve('red_rose_inventory.png')
         class Storage:
-            path = resolve('rose_storage.png')
+            path = resolve('red_rose_storage.png')
 
     class RedSnapdragons:
         storage_menu = UI.Storage.Flowers
         class Inventory:
-            path = resolve('snapdragon_inventory.png')
+            path = resolve('red_snapdragons_inventory.png')
         class Storage:
-            path = resolve('snapdragon_storage.png')
+            path = resolve('red_snapdragons_storage.png')
 
     class Sulfur:
         storage_menu = UI.Storage.Minerals
