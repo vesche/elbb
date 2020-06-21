@@ -59,4 +59,4 @@ async def elbb_connect(request, ws):
 
 def start():
     print(BANNER)
-    app.run(port=1337, protocol=WebSocketProtocol)
+    app.run('0.0.0.0', port=51337, protocol=WebSocketProtocol)
