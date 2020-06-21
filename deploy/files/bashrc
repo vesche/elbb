@@ -1,0 +1,15 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+PATH=$PATH:~/.local/bin
+GAMECLIENT='eternallands'
+export PATH
+export GAMECLIENT
+
+alias mousepos='xdotool getmouselocation --shell'
+alias ls='ls --color=auto'
+PS1='[\u@\h \W]\$ '

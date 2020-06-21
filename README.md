@@ -10,4 +10,4 @@ beep boop, this is a lil mmo bot :)
 * Complex game task automation
 * Optical character recognition
 * Live bot status reporting via websocket communication 
-* Automated deployment scripts for remote bot hosts to VPS with VNC access (WIP)
+* Automated deployment of remote bot on VPS with VNC access
