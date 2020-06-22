@@ -21,6 +21,7 @@ def launch_client():
     game_client = os.environ['GAMECLIENT']
     if not os.popen(f'pgrep -f {game_client}').read():
         os.system(f'{game_client} &')
+        # os.system(f'xvfb-run {game_client} &')
 
 
 def locate(image):

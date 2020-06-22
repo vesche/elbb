@@ -10,6 +10,5 @@ GAMECLIENT='gameclient'
 export PATH
 export GAMECLIENT
 
-alias mousepos='xdotool getmouselocation --shell'
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
