@@ -65,6 +65,8 @@ def wait_for_instance(linode_instance):
         print(crayons.yellow(f'[~] Waiting for {linode_instance.label} to start up, currently {status}...'))
         time.sleep(5)
         status = linode_instance.status
+    # give the instance time to start services
+    time.sleep(10)
 
 
 def init_config_instance(ip, root_password):
@@ -82,7 +84,7 @@ def init_config_instance(ip, root_password):
     run_command(
         conn,
         'Install required packages',
-        'pacman -S rxvt-unicode git redis tigervnc xfce4 binutils fakeroot gcc pkgconf make zenity python-pip tk scrot which tesseract go perl-file-pushd sdl2_net sdl2_image openal glu unzip patch --noconfirm'
+        'pacman -S xorg-server-xvfb x11vnc rxvt-unicode git redis binutils fakeroot gcc pkgconf make zenity python-pip tk scrot which tesseract go perl-file-pushd sdl2_net sdl2_image openal glu unzip patch --noconfirm'
     )
     run_command(
         conn,
@@ -104,9 +106,39 @@ def init_config_instance(ip, root_password):
         'Create /usr/share/tessdata directory',
         'mkdir -p /usr/share/tessdata/'
     )
+
     conn.put('files/sudoers', '/etc/sudoers')
     conn.put('files/sshd_config', '/etc/ssh/sshd_config')
+    conn.put('files/environment', '/etc/environment')
     conn.put('files/eng.traineddata', '/usr/share/tessdata/')
+
+    conn.put('files/xvfb@.service', '/etc/systemd/system')
+    run_command(
+        conn,
+        'Enable xvfb service on :99',
+        'systemctl enable xvfb@:99.service'
+    )
+
+    conn.put('files/x11vnc@.service', '/etc/systemd/system')
+    run_command(
+        conn,
+        'Enable x11vnc service on :99',
+        'systemctl enable x11vnc@:99.service'
+    )
+
+    run_command(
+        conn,
+        'Run a systemd daemon reload',
+        'systemctl daemon-reload'
+    )
+
+    # disable ipv6
+    conn.put('files/grub', '/etc/default/grub')
+    run_command(
+        conn,
+        'Update GRUB with IPv6 disabled',
+        'grub-mkconfig -o /boot/grub/grub.cfg'
+    )
 
 
 def config_instance(ip):
@@ -118,36 +150,53 @@ def config_instance(ip):
         connect_kwargs={'password': DEPLOY['password']},
         config=config
     )
+
     run_command(
         conn,
-        'SSH iptables command 1',
+        'Set iptables SSH (1/2)',
         f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
     )
     run_command(
         conn,
-        'SSH iptables command 2',
+        'Set iptables SSH (2/2)',
         f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} -j DROP'
     )
     run_command(
         conn,
-        'VNC iptables command 1',
+        'Set iptables VNC (1/2)',
         f'sudo iptables -A INPUT -p tcp --dport 5901 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
     )
     run_command(
         conn,
-        'VNC iptables command 2',
+        'Set iptables VNC (2/2)',
         f'sudo iptables -A INPUT -p tcp --dport 5901 -j DROP'
     )
     run_command(
         conn,
-        'elbb iptables command 1',
+        'Set iptables elbb (1/2)',
         f'sudo iptables -A INPUT -p tcp --dport 51337 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
     )
     run_command(
         conn,
-        'elbb iptables command 2',
+        'Set iptables elbb (1/2)',
         f'sudo iptables -A INPUT -p tcp --dport 51337 -j DROP'
     )
+    run_command(
+        conn,
+        'Save iptables rules',
+        'sudo iptables-save | sudo tee /etc/iptables/iptables.rules'
+    )
+    run_command(
+        conn,
+        'Start iptables service',
+        'sudo systemctl start iptables'
+    )
+    run_command(
+        conn,
+        'Enable iptables service',
+        'sudo systemctl enable iptables'
+    )
+
     run_command(
         conn,
         'Start redis',
@@ -160,29 +209,8 @@ def config_instance(ip):
     )
     run_command(
         conn,
-        'Create VNC directory',
-        'mkdir ~/.vnc'
-    )
-    run_command(
-        conn,
-        'Create VNC passwd file',
-        f'echo {DEPLOY["password"]} | vncpasswd -f > ~/.vnc/passwd'
-    )
-    run_command(
-        conn,
-        'Modify VNC passwd file permissions',
-        f'chmod 600 ~/.vnc/passwd'
-    )
-    conn.put('files/xstartup', '.vnc/')
-    run_command(
-        conn,
-        'Mark xstartup as an executable',
-        'chmod +x ~/.vnc/xstartup'
-    )
-    run_command(
-        conn,
-        'Start VNC server',
-        'vncserver'
+        'Download dtach snapshot from AUR',
+        'curl -O https://aur.archlinux.org/cgit/aur.git/snapshot/dtach.tar.gz'
     )
     run_command(
         conn,
@@ -196,6 +224,11 @@ def config_instance(ip):
     )
     run_command(
         conn,
+        'Extract dtach',
+        'tar xzvf dtach.tar.gz'
+    )
+    run_command(
+        conn,
         'Extract cal3d',
         'tar xzvf cal3d.tar.gz'
     )
@@ -203,6 +236,16 @@ def config_instance(ip):
         conn,
         'Extract gameclient',
         f'tar xzvf {DEPLOY["gameclient"]}.tar.gz'
+    )
+    run_command(
+        conn,
+        'Build dtach',
+        'pushd dtach/ && makepkg -s --noconfirm'
+    )
+    run_command(
+        conn,
+        'Install dtach',
+        'sudo pacman -U dtach/dtach-*.tar.xz --noconfirm'
     )
     run_command(
         conn,
@@ -234,18 +277,41 @@ def config_instance(ip):
         'Install elbb',
         'pushd elbb/ && python setup.py install --user'
     )
+    run_command(
+        conn,
+        'Create an .Xauthority file',
+        'touch .Xauthority'
+    )
 
     with open('files/bashrc', 'r') as f:
         data = f.read()
     with open('files/bashrc', 'w') as f:
         f.write(data.replace('gameclient', DEPLOY['gameclient']))
-
     conn.put('files/bashrc', '.bashrc')
+    # revert
+    with open('files/bashrc', 'w') as f:
+        f.write(data)
 
     run_command(
         conn,
-        'Clean up',
-        f'rm -rf *.tar.gz cal3d/ {DEPLOY["gameclient"]}/'
+        'Start the game client',
+        f'dtach -n /tmp/foo xvfb-run {DEPLOY["gameclient"]}'
+    )
+    run_command(
+        conn,
+        'Wait for the game client to start',
+        'sleep 20'
+    )
+    conn.put('files/post_deploy.py', 'post_deploy.py')
+    run_command(
+        conn,
+        'Run post deployment script',
+        'python post_deploy.py'
+    )
+    run_command(
+        conn,
+        'Clean up deployment',
+        f'rm -rf post_deploy.py *.tar.gz dtach/ cal3d/ {DEPLOY["gameclient"]}/'
     )
 
 
@@ -261,23 +327,26 @@ def main():
 
     # reboot instance
     linode_server.reboot()
+    print(crayons.green(f'[+] Rebooting: {linode_server.label}'))
     wait_for_instance(linode_server)
 
     # configure instance
     config_instance(ip)
 
     print('''
-    Manually configure gameclient:
-    v: 1152x864x16, fps 8, g 1.00, wsq 0, disable all
-    g: disable all, 256, sud 15, pp 30, mef 20.00/15.00, lct 16, micps 1
-    h: wot, uowb
-    save configuration
+    Change options:
+    HUD:
+        - Use Opaque Window Backgrounds
+    Video:
+        - 1024x768x16
+        - Limit FPS: 8
+    Save options
     ''')
 
     print(f'''
     Finished deployment! :D
     Name: {linode_server.label}
-    VNC: {ip}:1
+    x11vnc: {ip}:1
     ''')
 
 
