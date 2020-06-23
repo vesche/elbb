@@ -79,6 +79,7 @@ def crop_img(foo):
 def save_img(foo):
     global n
     os.system(f'mv crop.png save-{n}.png')
+    n += 1
 
 scrot_button = Button(root, text='scrot', command=get_scrot)
 scrot_button.place(x=0, y=0)
