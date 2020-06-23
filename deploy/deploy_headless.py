@@ -140,48 +140,6 @@ def init_config_instance(ip, root_password):
         'grub-mkconfig -o /boot/grub/grub.cfg'
     )
 
-    run_command(
-        conn,
-        'Set iptables SSH (1/2)',
-        f'iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'Set iptables SSH (2/2)',
-        f'iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} -j DROP'
-    )
-    run_command(
-        conn,
-        'Set iptables VNC (1/2)',
-        f'iptables -A INPUT -p tcp --dport 5901 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'Set iptables VNC (2/2)',
-        f'iptables -A INPUT -p tcp --dport 5901 -j DROP'
-    )
-    run_command(
-        conn,
-        'Set iptables elbb (1/2)',
-        f'iptables -A INPUT -p tcp --dport 51337 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'Set iptables elbb (1/2)',
-        f'iptables -A INPUT -p tcp --dport 51337 -j DROP'
-    )
-
-    run_command(
-        conn,
-        'Save iptables rules',
-        'iptables-save > /etc/iptables/iptables.rules'
-    )
-    run_command(
-        conn,
-        'Enable iptables service',
-        'systemctl enable iptables'
-    )
-
 
 def config_instance(ip):
     config = Config(overrides={'sudo': {'password': DEPLOY['password']}})
@@ -191,6 +149,52 @@ def config_instance(ip):
         port=DEPLOY['ssh_port'],
         connect_kwargs={'password': DEPLOY['password']},
         config=config
+    )
+
+    run_command(
+        conn,
+        'Set iptables SSH (1/2)',
+        f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables SSH (2/2)',
+        f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} -j DROP'
+    )
+    run_command(
+        conn,
+        'Set iptables VNC (1/2)',
+        f'sudo iptables -A INPUT -p tcp --dport 5901 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables VNC (2/2)',
+        f'sudo iptables -A INPUT -p tcp --dport 5901 -j DROP'
+    )
+    run_command(
+        conn,
+        'Set iptables elbb (1/2)',
+        f'sudo iptables -A INPUT -p tcp --dport 51337 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables elbb (1/2)',
+        f'sudo iptables -A INPUT -p tcp --dport 51337 -j DROP'
+    )
+    run_command(
+        conn,
+        'Save iptables rules',
+        'sudo iptables-save | sudo tee /etc/iptables/iptables.rules'
+    )
+    run_command(
+        conn,
+        'Start iptables service',
+        'sudo systemctl start iptables'
+    )
+    run_command(
+        conn,
+        'Enable iptables service',
+        'sudo systemctl enable iptables'
     )
 
     run_command(

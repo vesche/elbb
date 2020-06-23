@@ -9,7 +9,7 @@ pyautogui._pyautogui_x11._display = Xlib.display.Display(
 pyautogui.FAILSAFE = False
 
 def clicker(x, y):
-    pyautogui.moveXo(x, y)
+    pyautogui.moveTo(x, y)
     pyautogui.click()
     time.sleep(1)
 
@@ -27,6 +27,9 @@ clicker(778, 547)
 
 # click Yes
 clicker(944, 549)
+
+# Wait to load
+time.sleep(10)
 
 # click Save
 clicker(855, 669)
