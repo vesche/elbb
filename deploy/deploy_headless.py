@@ -132,6 +132,56 @@ def init_config_instance(ip, root_password):
         'systemctl daemon-reload'
     )
 
+    # disable ipv6
+    conn.put('files/grub', '/etc/default/grub')
+    run_command(
+        conn,
+        'Update GRUB with IPv6 disabled',
+        'grub-mkconfig -o /boot/grub/grub.cfg'
+    )
+
+    run_command(
+        conn,
+        'Set iptables SSH (1/2)',
+        f'iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables SSH (2/2)',
+        f'iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} -j DROP'
+    )
+    run_command(
+        conn,
+        'Set iptables VNC (1/2)',
+        f'iptables -A INPUT -p tcp --dport 5901 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables VNC (2/2)',
+        f'iptables -A INPUT -p tcp --dport 5901 -j DROP'
+    )
+    run_command(
+        conn,
+        'Set iptables elbb (1/2)',
+        f'iptables -A INPUT -p tcp --dport 51337 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
+    )
+    run_command(
+        conn,
+        'Set iptables elbb (1/2)',
+        f'iptables -A INPUT -p tcp --dport 51337 -j DROP'
+    )
+
+    run_command(
+        conn,
+        'Save iptables rules',
+        'iptables-save > /etc/iptables/iptables.rules'
+    )
+    run_command(
+        conn,
+        'Enable iptables service',
+        'systemctl enable iptables'
+    )
+
 
 def config_instance(ip):
     config = Config(overrides={'sudo': {'password': DEPLOY['password']}})
@@ -142,36 +192,7 @@ def config_instance(ip):
         connect_kwargs={'password': DEPLOY['password']},
         config=config
     )
-    run_command(
-        conn,
-        'SSH iptables command 1',
-        f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'SSH iptables command 2',
-        f'sudo iptables -A INPUT -p tcp --dport {DEPLOY["ssh_port"]} -j DROP'
-    )
-    run_command(
-        conn,
-        'VNC iptables command 1',
-        f'sudo iptables -A INPUT -p tcp --dport 5901 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'VNC iptables command 2',
-        f'sudo iptables -A INPUT -p tcp --dport 5901 -j DROP'
-    )
-    run_command(
-        conn,
-        'elbb iptables command 1',
-        f'sudo iptables -A INPUT -p tcp --dport 51337 --source {DEPLOY["src_ip"]}/32 -j ACCEPT'
-    )
-    run_command(
-        conn,
-        'elbb iptables command 2',
-        f'sudo iptables -A INPUT -p tcp --dport 51337 -j DROP'
-    )
+
     run_command(
         conn,
         'Start redis',
@@ -257,10 +278,16 @@ def config_instance(ip):
         'Create an .Xauthority file',
         'touch .Xauthority'
     )
+
     run_command(
         conn,
-        'Install pyvirtualdisplay',
-        'pip install pyvirtualdisplay pyscreenshot --user'
+        'Install pip wheel',
+        'pip install wheel --user'
+    )
+    run_command(
+        conn,
+        'Install extra pip packages',
+        'pip install mss pyvirtualdisplay pyscreenshot --user'
     )
 
     with open('files/bashrc', 'r') as f:
@@ -307,6 +334,7 @@ def main():
 
     # reboot instance
     linode_server.reboot()
+    print(crayons.green(f'[+] Rebooting: {linode_server.label}'))
     wait_for_instance(linode_server)
 
     # configure instance

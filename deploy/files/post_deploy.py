@@ -10,27 +10,34 @@ display.start()
 pyautogui._pyautogui_x11._display = Xlib.display.Display(':99')
 pyautogui.FAILSAFE = False
 
+def clicker(x, y):
+    pyautogui.moveXo(x, y)
+    pyautogui.click()
+    time.sleep(1)
+
 # select server
-pyautogui.moveTo(459, 475)
-pyautogui.click()
-time.sleep(1)
+clicker(459, 475)
 
 # click OK
-pyautogui.moveTo(820, 629)
-pyautogui.click()
-time.sleep(1)
+clicker(820, 629)
 
 # click No
-pyautogui.moveTo(712, 551)
-pyautogui.click()
-time.sleep(1)
+clicker(712, 551)
 
 # click OK
-pyautogui.moveTo(778, 547)
-pyautogui.click()
-time.sleep(1)
+clicker(778, 547)
 
 # click Yes
-pyautogui.moveTo(944, 549)
+clicker(944, 549)
+
+# click Save
+clicker(855, 669)
+
+# scroll down, wait, hit Accept
+for _ in range(30):
+    pyautogui.press('down')
+time.sleep(20)
+clicker(624, 768)
+
+# click screen again to drop into Login
 pyautogui.click()
-time.sleep(1)

@@ -5,3 +5,5 @@ dist/
 *.egg-info/
 my.json
 deploy.log
+headless_scrot.png
+DEV.md
