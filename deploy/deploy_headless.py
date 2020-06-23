@@ -279,17 +279,6 @@ def config_instance(ip):
         'touch .Xauthority'
     )
 
-    run_command(
-        conn,
-        'Install pip wheel',
-        'pip install wheel --user'
-    )
-    run_command(
-        conn,
-        'Install extra pip packages',
-        'pip install mss pyvirtualdisplay pyscreenshot --user'
-    )
-
     with open('files/bashrc', 'r') as f:
         data = f.read()
     with open('files/bashrc', 'w') as f:

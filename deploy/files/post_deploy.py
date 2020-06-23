@@ -3,11 +3,9 @@ import time
 import pyautogui
 import Xlib.display
 
-from pyvirtualdisplay.smartdisplay import SmartDisplay
-
-display = SmartDisplay(visible=0, size=(1280, 1024))
-display.start()
-pyautogui._pyautogui_x11._display = Xlib.display.Display(':99')
+pyautogui._pyautogui_x11._display = Xlib.display.Display(
+    os.environ['DISPLAY']
+)
 pyautogui.FAILSAFE = False
 
 def clicker(x, y):

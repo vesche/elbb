@@ -1,8 +1,11 @@
-import mss
-import mss.tools
+import os
+import time
+import pyautogui
+import Xlib.display
 
-region = {'top':128, 'left':128, 'width':1024, 'height':768}
-
-with mss.mss() as sct:
-    img = sct.grab(region)
-    mss.tools.to_png(img.rgb, img.size, output='/tmp/headless_scrot.png')
+pyautogui._pyautogui_x11._display = Xlib.display.Display(
+    os.environ['DISPLAY']
+)
+pyautogui.FAILSAFE = False
+img = pyautogui.screenshot(region=(128, 128, 1024, 768))
+img.save('/tmp/headless_scrot.png')
