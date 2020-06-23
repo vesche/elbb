@@ -1,11 +1,6 @@
-import os
 import time
 import pyautogui
-import Xlib.display
 
-pyautogui._pyautogui_x11._display = Xlib.display.Display(
-    os.environ['DISPLAY']
-)
 pyautogui.FAILSAFE = False
 
 def clicker(x, y):

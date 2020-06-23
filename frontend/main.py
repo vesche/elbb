@@ -27,7 +27,7 @@ def index():
 @app.route('/bot/<bot_name>')
 def bot(bot_name):
     bot_data = bots[bot_name]
-    executor.submit(start_bot, bot_data['ip'])
+    executor.submit(start_bot, bot_data)
     return render_template('bot.html', bot_data=bot_data)
 
 

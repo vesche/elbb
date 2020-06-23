@@ -89,3 +89,23 @@ def auto_read():
                 return
 
         time.sleep(random.randint(45, 75))
+
+
+def auto_login(username, password):
+    # click screen
+    engine.move_mouse(258, 147)
+    engine.click()
+
+    # enter username
+    engine.move_mouse(477+128, 291+128)
+    engine.click()
+    engine.write(username)
+
+    # enter password
+    engine.move_mouse(477+128, 335+128)
+    engine.click()
+    engine.write(password)
+
+    # hit Log In
+    engine.move_mouse(383+128, 384+128)
+    engine.click()

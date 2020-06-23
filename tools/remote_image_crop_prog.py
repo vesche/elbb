@@ -43,6 +43,7 @@ def get_coords(mouse):
 
     x = mouse.x
     y = mouse.y
+    print(x, y)
 
     if PIN_1_SELECTED:
         PIN_1_SELECTED = False

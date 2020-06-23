@@ -93,6 +93,10 @@ def move_to(image):
     return True
 
 
+def write(text):
+    pyautogui.write(text)
+
+
 def move_inventory_to_storage(item, n=1):
     log(f'Moving {item.__name__} from inventory to storage...')
 
