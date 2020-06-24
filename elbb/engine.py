@@ -14,6 +14,7 @@ from scipy import interpolate
 from elbb.queue import log
 from elbb.resources import UI
 
+pyautogui.FAILSAFE = False
 COOLDOWNS = dict()
 
 
@@ -93,6 +94,133 @@ def move_to(image):
     return True
 
 
+def click_in_region(x1, y1, x2, y2):
+    dx, dy = x2 - x1, y2 - y1
+    rx, ry = random.randint(0, dx), random.randint(0, dy)
+    pyautogui.moveTo(x1+rx+128, y1+ry+128)
+    click(n=2)
+
+
+def select_walk():
+    click_in_region(1, 737, 29, 766)
+
+
+def select_sit():
+    click_in_region(33, 737, 61, 766)
+
+
+def select_look():
+    click_in_region(65, 737, 93, 766)
+
+
+def select_use():
+    click_in_region(97, 737, 125, 766)
+
+
+def select_fist():
+    click_in_region(129, 737, 157, 766)
+
+
+def select_trade():
+    click_in_region(161, 737, 189, 766)
+
+
+def select_combat():
+    click_in_region(193, 737, 221, 766)
+
+
+def select_inventory():
+    click_in_region(225, 737, 253, 766)
+
+
+def select_spells():
+    click_in_region(257, 737, 285, 766)
+
+
+def select_manufacture():
+    click_in_region(289, 737, 317, 766)
+
+
+def select_emotes():
+    click_in_region(321, 737, 349, 766)
+
+
+def select_quest_log():
+    click_in_region(353, 737, 381, 766)
+
+
+def select_map():
+    click_in_region(385, 737, 413, 766)
+
+
+def select_notepad():
+    click_in_region(417, 737, 445, 766)
+
+
+def select_buddy():
+    click_in_region(449, 737, 477, 766)
+
+
+def select_map():
+    click_in_region(481, 737, 509, 766)
+
+
+def select_stats():
+    click_in_region(513, 737, 541, 766)
+
+
+def select_console():
+    click_in_region(545, 737, 573, 766)
+
+
+def select_help():
+    click_in_region(577, 737, 605, 766)
+
+
+def select_ranging():
+    click_in_region(609, 737, 637, 766)
+
+
+def select_minimap():
+    click_in_region(641, 737, 669, 766)
+
+
+def select_options():
+    click_in_region(673, 737, 701, 766)
+
+
+def select_book_status():
+    click_in_region(963, 605, 1021, 616)
+
+
+def select_item_1():
+    click_in_region(995, 67, 1020, 92)
+
+
+def select_item_2():
+    click_in_region(995, 97, 1020, 122)
+
+
+def select_item_3():
+    click_in_region(995, 127, 1020, 152)
+
+
+def select_item_4():
+    click_in_region(995, 157, 1020, 182)
+
+
+def select_item_5():
+    click_in_region(995, 187, 1020, 212)
+
+
+def select_item_6():
+    click_in_region(995, 217, 1020, 242)
+
+
+def select_logo():
+    click_in_region(968, 4, 1020, 60)
+
+
 def write(text):
     pyautogui.write(text)
 
@@ -169,24 +297,6 @@ def start_cooldown(name, seconds):
     t.start()
 
 
-def select_use():
-    if locate(UI.Use.Unselected):
-        move_to(UI.Use.Unselected)
-        click()
-
-
-def select_walk():
-    if locate(UI.Walk.Unselected):
-        move_to(UI.Walk.Unselected)
-        click()
-
-
-def select_look():
-    if locate(UI.Look.Unselected):
-        move_to(UI.Look.Unselected)
-        click()
-
-
 def eat(food, storage_mode=False):
     can_eat = False
 
@@ -220,7 +330,7 @@ def ocr(x, y, dx, dy):
 
 def get_manufacture_status():
     m_location = locate(UI.Manufacture.Banner)
-    m_text = ocr(m_location.left-160, m_location.top+113, 400, 16)
+    m_text = ocr(m_location.left-159, m_location.top+115, 255, 16)
     log(f'Got manufacture status: {m_text}')
     return m_text
 
@@ -261,6 +371,8 @@ def get_inventory_text():
 
 
 def get_book_status():
+    pass
+    """
     cd_location = locate(UI.Countdown.Marker)
     move_mouse(cd_location.left + random.randint(20, 80), cd_location.top + 38)
     click()
@@ -274,3 +386,4 @@ def get_book_status():
 
     log(f'Got book status: {text}')
     return text
+    """

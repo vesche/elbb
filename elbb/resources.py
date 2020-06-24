@@ -14,14 +14,6 @@ class UI:
     UI Resources
     """
 
-    class Console:
-        class Marker:
-            path = resolve('console_marker.png')
-
-    class Countdown:
-        class Marker:
-            path = resolve('countdown_marker.png')
-
     class Food:
         class NegativeA:
             path = resolve('food_negative_a.png')
@@ -31,14 +23,6 @@ class UI:
     class Inventory:
         class Banner:
             path = resolve('inventory_banner.png')
-
-    class Logo:
-        class Marker:
-            path = resolve('logo_marker.png')
-
-    class Look:
-        class Unselected:
-            path = resolve('look_unselected.png')
 
     class Manufacture:
         class Banner:
@@ -55,18 +39,6 @@ class UI:
             path = resolve('storage_food.png')
         class Minerals:
             path = resolve('storage_minerals.png')
-
-    class Use:
-        class Selected:
-            path = None
-        class Unselected:
-            path = resolve('use_unselected.png')
-
-    class Walk:
-        class Selected:
-            path = None
-        class Unselected:
-            path = resolve('walk_unselected.png')
 
 
 class Items:

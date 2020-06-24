@@ -338,7 +338,7 @@ def main():
     HUD:
         - Use Opaque Window Backgrounds
     Video:
-        - 1024x768x16
+        - 1024x768x32
         - Limit FPS: 8
     Save options
     ''')

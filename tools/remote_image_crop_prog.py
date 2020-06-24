@@ -32,6 +32,7 @@ canvas = Canvas(
     borderwidth=0, highlightthickness=0
 )
 
+
 def get_coords(mouse):
     global PIN_1
     global PIN_2
@@ -62,6 +63,7 @@ def get_coords(mouse):
         PIN_2 = canvas.create_rectangle(x-3, y-3, x+3, y+3, fill='red', width=0)
         PIN_2_COORDS = (x, y)
 
+
 def get_scrot():
     global img
     global img_raw
@@ -74,13 +76,18 @@ def get_scrot():
     canvas.create_image(512, 384, image=img)
     canvas.pack()
 
+
 def crop_img(foo):
     img_raw.crop((*PIN_1_COORDS, *PIN_2_COORDS)).save('crop.png')
+    print(f'Cropped!')
+
 
 def save_img(foo):
     global n
     os.system(f'mv crop.png save-{n}.png')
+    print(f'Saved! save-{n}.png')
     n += 1
+
 
 scrot_button = Button(root, text='scrot', command=get_scrot)
 scrot_button.place(x=0, y=0)

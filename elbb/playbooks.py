@@ -26,7 +26,7 @@ def auto_fire_essence_loop():
         engine.move_to(UI.Manufacture.MixAll)
         engine.click()
         log('Mixing...', category='good')
-        engine.move_to(UI.Logo.Marker)
+        engine.select_logo()
 
     # check for any Fire Essence in inventory & move them to storage
     if engine.locate(Items.FireEssence.Inventory):
