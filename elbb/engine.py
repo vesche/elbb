@@ -276,21 +276,21 @@ def move_storage_to_inventory(item, n=1):
     click(n)
     pyautogui.click(button='right')
 
-    log(f'{item.__name__} moved to storage.', category='good')
+    log(f'{item.__name__} moved to inventory.', category='good')
     return True
 
 
-def create_cooldown(name, seconds):
+def run_cooldown(name, seconds):
     COOLDOWNS[name] = seconds
     for _ in range(seconds):
         time.sleep(1)
-        seconds -= 1
+        COOLDOWNS[name] -= 1
     COOLDOWNS.pop(name)
 
 
 def start_cooldown(name, seconds):
     t = threading.Thread(
-        target=create_cooldown,
+        target=run_cooldown,
         kwargs={'name': name, 'seconds': seconds}
     )
     t.daemon = True

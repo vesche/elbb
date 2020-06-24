@@ -279,6 +279,26 @@ def config_instance(ip):
     )
     run_command(
         conn,
+        'Uninstall pyscreeze',
+        'pip uninstall pyscreeze -y'
+    )
+    run_command(
+        conn,
+        'Install mss',
+        'pip install mss -y'
+    )
+    run_command(
+        conn,
+        'Clone vesche/pyscreeze fork',
+        'git clone https://github.com/vesche/pyscreeze'
+    )
+    run_command(
+        conn,
+        'Install vesche/pyscreeze fork',
+        'pushd pyscreeze/ && python setup.py install --user'
+    )
+    run_command(
+        conn,
         'Create an .Xauthority file',
         'touch .Xauthority'
     )
