@@ -28,15 +28,16 @@ def run_command(conn, description, command):
     else:
         result = conn.run(command, hide=True)
 
-    # log
-    with open('deploy.log', 'a') as f:
-        f.write(
-            f'{BAR}\n' + \
-            f'Command: {command}\n' + \
-            f'Description: {description}\n' + \
-            f'Success: {result.ok}\n' + \
-            f'Output:\n{result.stdout}\n'
-        )
+    if DEBUG:
+        # log when debug mode enabled
+        with open('deploy.log', 'a') as f:
+            f.write(
+                f'{BAR}\n' + \
+                f'Command: {command}\n' + \
+                f'Description: {description}\n' + \
+                f'Success: {result.ok}\n' + \
+                f'Output:\n{result.stdout}\n'
+            )
 
     if result.ok:
         print(crayons.green(f'[+] SUCCESS: {description}'))
@@ -125,6 +126,16 @@ def init_config_instance(ip, root_password):
         'Enable x11vnc service on :99',
         'systemctl enable x11vnc@:99.service'
     )
+
+    # handle elbb systemd file while root
+    with open('files/elbb.service', 'r') as f:
+        data = f.read()
+    with open('files/elbb.service', 'w') as f:
+        f.write(data.replace('gameclient', DEPLOY['gameclient']))
+    conn.put('files/elbb.service', '/etc/systemd/system')
+    # revert
+    with open('files/elbb.service', 'w') as f:
+        f.write(data)
 
     run_command(
         conn,
@@ -285,7 +296,7 @@ def config_instance(ip):
     run_command(
         conn,
         'Install mss',
-        'pip install mss -y'
+        'pip install mss --user'
     )
     run_command(
         conn,
@@ -302,15 +313,16 @@ def config_instance(ip):
         'Create an .Xauthority file',
         'touch .Xauthority'
     )
-
-    with open('files/bashrc', 'r') as f:
-        data = f.read()
-    with open('files/bashrc', 'w') as f:
-        f.write(data.replace('gameclient', DEPLOY['gameclient']))
-    conn.put('files/bashrc', '.bashrc')
-    # revert
-    with open('files/bashrc', 'w') as f:
-        f.write(data)
+    run_command(
+        conn,
+        'Start elbb service',
+        'sudo systemctl start elbb.service'
+    )
+    run_command(
+        conn,
+        'Enable elbb service',
+        'sudo systemctl enable elbb.service'
+    )
 
     run_command(
         conn,
@@ -331,7 +343,7 @@ def config_instance(ip):
     run_command(
         conn,
         'Clean up deployment',
-        f'rm -rf post_deploy.py *.tar.gz dtach/ cal3d/ {DEPLOY["gameclient"]}/'
+        f'rm -rf post_deploy.py *.tar.gz elbb/ pyscreeze/ dtach/ cal3d/ {DEPLOY["gameclient"]}/'
     )
 
 

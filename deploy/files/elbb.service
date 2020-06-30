@@ -1,0 +1,14 @@
+[Unit]
+Description=elbb
+After=network.target
+
+[Service]
+User=user
+Group=user
+Environment="DISPLAY=:99"
+Environment="GAMECLIENT=gameclient"
+ExecStart=/home/user/.local/bin/elbb
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
