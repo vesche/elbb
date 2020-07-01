@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
-<br><br>
+<br>
 
 <!--
 <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
@@ -13,12 +12,15 @@
 -->
 
 <div id="right-side">
+    <b>Bot Name: {{ bot_name }}</b>
+    <br>
     <b>IP: {{ bot_data['ip'] }}</b>
     <br>
     <b>Username: {{ bot_data['username'] }}</b>
     <br><br><br>
     Playbooks!
     <br>
+
     <img src="{{ url_for('static', filename='fire_essence.png') }}">
     <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
     <form action="/command" method="POST" target="dummyframe">
@@ -31,6 +33,7 @@
         <button type="submit" name="command" value="auto_read">Auto Read</button>
     </form>
 
+    <img src="{{ url_for('static', filename='login.png') }}">
     <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
     <form action="/command" method="POST" target="dummyframe">
         <button type="submit" name="command" value="auto_login">Auto Login</button>

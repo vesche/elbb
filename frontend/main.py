@@ -34,7 +34,7 @@ def bot(bot_name):
     new_bot = Bot(bot_name, bot_data)
     bot_controllers[bot_name] = new_bot
     executor.submit(new_bot.start, redis_controller)
-    return render_template('bot.html', bot_data=bot_data)
+    return render_template('bot.html', bot_name=bot_name, bot_data=bot_data)
 
 
 @app.route('/command', methods=['POST'])

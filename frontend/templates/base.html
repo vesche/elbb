@@ -7,8 +7,10 @@
     </head>
     <body>
         <img src="{{ url_for('static', filename='elbb_logo.png') }}">
+        <a href="/"><img src="{{ url_for('static', filename='home.png') }}"></a>
         <img src="{{ url_for('static', filename='el_logo.png') }}" style="float: right;">
         <br><br>
+        <hr>
         {% block body %}{% endblock %}
     </body>
 </html>
