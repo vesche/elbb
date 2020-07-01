@@ -286,7 +286,7 @@ def config_instance(ip):
     run_command(
         conn,
         'Install elbb',
-        'pushd elbb/ && python setup.py install --user'
+        'pushd elbb/bot/ && python setup.py install --user'
     )
     run_command(
         conn,
