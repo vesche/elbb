@@ -11,6 +11,10 @@ HUNGRY = False
 
 
 def start_auto_fire_essence():
+    """
+    Automatic fire essence creation in any storage.
+    """
+
     try:
         while True:
             auto_fire_essence_loop()
@@ -67,6 +71,10 @@ def auto_fire_essence_loop():
 
 
 def auto_read():
+    """
+    Automatic book reading in the secret library.
+    """
+
     inventory = engine.get_inventory_text()
 
     while True:
@@ -92,6 +100,10 @@ def auto_read():
 
 
 def auto_login(username, password):
+    """
+    Automatic login from client launch.
+    """
+
     # click screen
     engine.move_mouse(258, 147)
     engine.click()
@@ -109,3 +121,15 @@ def auto_login(username, password):
     # hit Log In
     engine.move_mouse(383+128, 384+128)
     engine.click()
+
+
+def noop:
+    pass
+
+
+manifest = {
+    'noop': noop,
+    'auto_fire_essence': start_auto_fire_essence,
+    'auto_login': auto_login,
+    'auto_read': auto_read
+}

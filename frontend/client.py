@@ -4,59 +4,55 @@ import redis
 import threading
 import websocket
 
-r = redis.Redis(host='localhost', port=6379, db=0)
 
-username = str()
-password = str()
+class Bot:
+    def __init__(self, bot_name, bot_data):
+        self.name = bot_name
+        self.ip = bot_data['ip']
+        self.username = bot_data['username']
+        self.password = bot_data['password']
+        self.ws = None
 
+    def start(self, redis_controller):
+        def run_bot(ws):
+            while True:
+                command = redis_controller.get('command')
 
-def run_bot(ws):
-    global username
-    global password
+                if command:
+                    args = dict()
+                    command = command.decode('utf-8')
 
-    while True:
-        command = r.get('command')
+                    if command == 'auto_login':
+                        args = {
+                            'username': self.username,
+                            'password': self.password
+                        }
 
-        if command:
-            args = dict()
+                    payload = json.dumps({
+                        'command': command,
+                        'args': args
+                    })
+                    ws.send(payload)
+                    redis_controller.delete('command')
 
-            command = command.decode('utf-8')
-            if command == 'auto_login':
-                args = {
-                    'username': username,
-                    'password': password
-                }
+                # wait until redis "command" updates
+                time.sleep(1)
 
-            payload = json.dumps({
-                'command': command,
-                'args': args
-            })
-            ws.send(payload)
-            r.delete('command')
-        time.sleep(1)
+            # on disconnect, close websocket and remove bot from bots dict
+            ws.close()
+            bots.pop(self.name)
 
-    ws.close()
+        def on_message(ws, message):
+            redis_controller.lpush('messages', message.rstrip())
 
+        def on_open(ws):
+            bot_thread = threading.Thread(target=run_bot, args=(ws,))
+            bot_thread.daemon = True
+            bot_thread.start()
 
-def on_message(ws, message):
-    r.lpush('messages', message.rstrip())
-
-
-def on_open(ws):
-    t = threading.Thread(target=run_bot, args=(ws,))
-    t.daemon = True
-    t.start()
-
-
-def start_bot(bot_data):
-    global username
-    global password
-    username = bot_data['username']
-    password = bot_data['password']
-
-    ws = websocket.WebSocketApp(
-        f'ws://{bot_data["ip"]}:51337/elbb_connect',
-        on_message=on_message
-    )
-    ws.on_open = on_open
-    ws.run_forever()
+        self.ws = websocket.WebSocketApp(
+            f'ws://{self.ip}:51337/elbb_connect',
+            on_message=on_message
+        )
+        self.ws.on_open = on_open
+        self.ws.run_forever()

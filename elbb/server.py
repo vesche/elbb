@@ -5,9 +5,9 @@ import asyncio
 import threading
 
 from elbb.meta import BANNER
+from elbb.playbooks import manifest
 from elbb.engine import launch_client
 from elbb.queue import get_queue, clear_queue
-from elbb.playbooks import start_auto_fire_essence, auto_read, auto_login
 
 from sanic import Sanic, response
 from sanic.websocket import WebSocketProtocol
@@ -24,14 +24,9 @@ async def _consumer_handler(ws):
         command = data['command']
         args = data['args']
 
-        if command == 'noop':
-            continue
-        elif command == 'auto_fire_essence':
-            target_func = start_auto_fire_essence
-        elif command == 'auto_read':
-            target_func = auto_read
-        elif command == 'auto_login':
-            target_func = auto_login
+        # get target function from playbook manifest 
+        if command in manifest:
+            target_func = manifest[command]
 
         if target_func:
             t = threading.Thread(target=target_func, args=[*args.values()])

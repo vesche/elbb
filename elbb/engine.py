@@ -22,14 +22,11 @@ def launch_client():
     game_client = os.environ['GAMECLIENT']
     if not os.popen(f'pgrep -f {game_client}').read():
         os.system(f'{game_client} &')
-        # os.system(f'xvfb-run {game_client} &')
 
 
 def locate(image):
     location = pyautogui.locateOnScreen(
         image.path,
-        # region=(1920, 40, 1920, 1040),
-        # region=(0, 40, 1920, 1040),
         grayscale=True
     )
     return location
@@ -371,19 +368,8 @@ def get_inventory_text():
 
 
 def get_book_status():
-    pass
-    """
-    cd_location = locate(UI.Countdown.Marker)
-    move_mouse(cd_location.left + random.randint(20, 80), cd_location.top + 38)
+    move_mouse(992+128, 610+128)
     click()
-
-    toggle_console()
-    cm_location = locate(UI.Console.Marker)
-    text = ocr(cm_location.left, cm_location.top-72, 1776, 30)
-    toggle_console()
-
-    move_to(UI.Logo.Marker)
-
+    text = ocr(4+128, 24+128, 353, 17)
     log(f'Got book status: {text}')
     return text
-    """
