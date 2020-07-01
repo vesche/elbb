@@ -123,7 +123,7 @@ def auto_login(username, password):
     engine.click()
 
 
-def noop:
+def noop():
     pass
 
 

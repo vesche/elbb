@@ -1,6 +1,7 @@
 import os
 import json
 
+from invoke import Responder
 from fabric import Connection
 
 with open('my.json') as f:
@@ -13,12 +14,19 @@ conn = Connection(
     connect_kwargs={'password': config['pass']}
 )
 
-conn.run('killall -q elbb', warn=True)
+conn_root = Connection(
+    host=config['host'],
+    user='root',
+    port=config['port'],
+    connect_kwargs={'password': config['pass']}
+)
+
+conn_root.run('systemctl stop elbb')
 conn.run('pip uninstall elbb -y')
-os.system('tar czf elbb.tar.gz ../../elbb/')
-conn.put('elbb.tar.gz', 'elbb.tar.gz')
-conn.run('tar xzf elbb.tar.gz')
-conn.run('pushd elbb && python setup.py install --user')
-# conn.run('dtach -n /tmp/foo .local/bin/elbb')
-conn.run('rm -rf elbb.tar.gz elbb/')
-os.system('rm elbb.tar.gz')
+os.system('tar czf bot.tar.gz ../bot/')
+conn.put('bot.tar.gz', 'bot.tar.gz')
+conn.run('tar xzf bot.tar.gz')
+conn.run('pushd bot/ && python setup.py install --user')
+conn_root.run('systemctl start elbb')
+conn.run('rm -rf bot.tar.gz bot/')
+os.system('rm bot.tar.gz')
