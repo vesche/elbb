@@ -14,10 +14,6 @@ class UI:
     UI Resources
     """
 
-    class Generic:
-        class Close:
-            path = resolve('generic_close.png')
-
     class Food:
         class NegativeA:
             path = resolve('food_negative_a.png')

@@ -350,7 +350,7 @@ def pan_up(n=1):
 
 
 def click_flag():
-    select_walk()
+    select_use()
     zoom_in(n=30)
     pan_down(n=10)
 
@@ -377,17 +377,12 @@ def click_flag():
     # attempt 1
     move_mouse(590+x, 462+y)
     click()
-    move_to(UI.Generic.Close, click_mode=True)
-
     # attempt 2
     move_mouse(590+x+5, 462+y+5)
     click()
-    move_to(UI.Generic.Close, click_mode=True)
-
     # attempt 3
     move_mouse(640, 512)
     click()
-    move_to(UI.Generic.Close, click_mode=True)
 
     # wait for new map to load
     time.sleep(3)
@@ -417,7 +412,7 @@ def go_to_white_stone():
 
 def go_to_desert_pines():
     go_to_white_stone()
-    click_on_map(890, 724)
+    click_on_map(889, 724)
     # wait to walk to ship
     time.sleep(20)
     click_flag()
@@ -439,9 +434,42 @@ def go_to_portland():
     click_flag()
 
 
+def go_to_crystal_cave():
+    go_to_desert_pines()
+    click_on_map(364, 290)
+    # wait to walk across map
+    time.sleep(110)
+    # enter cave
+    zoom_out()
+    move_mouse(620, 219)
+    click()
+
+
+def go_to_crystal_cave_sulfur():
+    go_to_crystal_cave()
+    # wait a sec for cave to load
+    time.sleep(1)
+    click_on_map(532, 164)
+    # wait to walk to sulfur
+    time.sleep(25)
+    select_sit()
+
+
 def ocr(x, y, dx, dy):
     ss = pyautogui.screenshot(region=(x, y, dx, dy))
     return pytesseract.image_to_string(ss)
+
+
+def get_load_status():
+    try:
+        return int(ocr(546, 849, 23, 13))
+    except ValueError:
+        pass
+    try:
+        return int(ocr(552, 849, 17, 15))
+    except ValueError:
+        pass
+    return None
 
 
 def get_manufacture_status():
