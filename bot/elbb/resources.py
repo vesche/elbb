@@ -20,6 +20,16 @@ class UI:
         class NegativeB:
             path = resolve('food_negative_b.png')
 
+    class Generic:
+        class Close:
+            path = resolve('generic_close.png')
+        class Dialogue:
+            path = resolve('generic_dialogue.png')
+        class Stand:
+            path = resolve('generic_stand.png')
+        class X:
+            path = resolve('generic_x.png')
+
     class Inventory:
         class Banner:
             path = resolve('inventory_banner.png')
@@ -30,6 +40,10 @@ class UI:
         class MixAll:
             path = resolve('manufacture_mix_all.png')
 
+    class Map:
+        class Legend:
+            path = resolve('map_legend.png')
+
     class Storage:
         class Banner:
             path = resolve('storage_banner.png')
@@ -37,6 +51,8 @@ class UI:
             path = resolve('storage_flowers.png')
         class Food:
             path = resolve('storage_food.png')
+        class Open:
+            path = resolve('storage_open.png')
         class Minerals:
             path = resolve('storage_minerals.png')
 

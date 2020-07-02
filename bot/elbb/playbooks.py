@@ -123,6 +123,42 @@ def auto_login(username, password):
     engine.click()
 
 
+def auto_sulfur():
+    # TODO: go to VotD storage & equip leather gloves first
+
+    while True:
+        engine.close_everything()
+        engine.go_to_crystal_cave_sulfur()
+
+        # setup to harvest sulfur
+        engine.zoom_in(n=30)
+        engine.pan_up(n=10)
+
+        while True:
+            engine.select_walk()
+            engine.click_sulfur()
+
+            # pause to harvest
+            time.sleep(30)
+
+            # ensure we didn't teleport
+            engine.click_on_map(532, 164)
+
+            # wait to move back to harvest spot
+            time.sleep(1)
+
+            # sit down if moved
+            if not engine.locate(UI.Generic.Stand):
+                engine.select_sit()
+
+            # break if overweighted
+            if engine.get_load_status() < 4:
+                break
+
+        engine.go_to_valley_of_the_dwarves_storage()
+        engine.sto_items([Items.Sulfur])
+
+
 def noop():
     pass
 

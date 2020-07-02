@@ -82,7 +82,7 @@ def click(n=1):
         time.sleep(random.uniform(0.05, 0.3))
 
 
-def move_to(image, click_mode=True):
+def move_to(image, click_mode=False):
     location = locate(image)
     if not location:
         return False
@@ -93,39 +93,39 @@ def move_to(image, click_mode=True):
     return True
 
 
-def click_in_region(x1, y1, x2, y2):
+def click_in_region(x1, y1, x2, y2, clicks=1):
     dx, dy = x2 - x1, y2 - y1
     rx, ry = random.randint(0, dx), random.randint(0, dy)
     pyautogui.moveTo(x1+rx+128, y1+ry+128)
-    click(n=2)
+    click(n=clicks)
 
 
 def select_walk():
-    click_in_region(1, 737, 29, 766)
+    click_in_region(1, 737, 29, 766, clicks=2)
 
 
 def select_sit():
-    click_in_region(33, 737, 61, 766)
+    click_in_region(33, 737, 61, 766, clicks=2)
 
 
 def select_look():
-    click_in_region(65, 737, 93, 766)
+    click_in_region(65, 737, 93, 766, clicks=2)
 
 
 def select_use():
-    click_in_region(97, 737, 125, 766)
+    click_in_region(97, 737, 125, 766, clicks=2)
 
 
 def select_fist():
-    click_in_region(129, 737, 157, 766)
+    click_in_region(129, 737, 157, 766, clicks=2)
 
 
 def select_trade():
-    click_in_region(161, 737, 189, 766)
+    click_in_region(161, 737, 189, 766, clicks=2)
 
 
 def select_combat():
-    click_in_region(193, 737, 221, 766)
+    click_in_region(193, 737, 221, 766, clicks=2)
 
 
 def select_inventory():
@@ -148,8 +148,8 @@ def select_quest_log():
     click_in_region(353, 737, 381, 766)
 
 
-def select_map():
-    click_in_region(385, 737, 413, 766)
+#def select_map():
+#    click_in_region(385, 737, 413, 766)
 
 
 def select_notepad():
@@ -230,11 +230,10 @@ def move_inventory_to_storage(item, n=1):
     select_walk()
 
     # click the item in the inventory
-    success = move_to(item.Inventory)
+    success = move_to(item.Inventory, click_mode=True)
     if not success:
         log(f'Could not find {item.__name__} in the inventory!', category='bad')
         return False
-    click()
 
     # move the item to the storage
     storage_location = locate(UI.Storage.Banner)
@@ -329,6 +328,11 @@ def toggle_map():
     time.sleep(.5)
 
 
+def close_map():
+    if locate(UI.Map.Legend):
+        toggle_map()
+
+
 def zoom_in(n=1):
     for _ in range(n):
         pyautogui.press('pageup')
@@ -349,10 +353,13 @@ def pan_up(n=1):
         pyautogui.press('down')
 
 
-def click_flag():
+def click_flag(shitty=False):
     select_use()
     zoom_in(n=30)
     pan_down(n=10)
+
+    if shitty:
+        zoom_out()
 
     def scan_for_flag():
         for _ in range(100):
@@ -364,7 +371,7 @@ def click_flag():
             for y in range(0, 100, 10):
                 for x in range(0, 100, 10):
                     _, _, b = pixels[x, y]
-                    if b > 80:
+                    if b > 75:
                         return (x, y)
         return None
 
@@ -390,6 +397,65 @@ def click_flag():
     return True
 
 
+def click_storage():
+    select_use()
+    zoom_in(n=30)
+    pan_down(n=10)
+
+    def scan_for_storage():
+        for _ in range(100):
+            pyautogui.press('left')
+            img = pyautogui.screenshot(
+                region=(590, 462, 100, 100)
+            )
+            pixels = img.load()
+            for y in range(0, 100, 10):
+                for x in range(0, 100, 10):
+                    _, _, b = pixels[x, y]
+                    if b < 10:
+                        return (x, y)
+        return None
+
+    offset_coords = scan_for_storage()
+    if not offset_coords:
+        return False
+
+    x, y = offset_coords
+    move_mouse(590+x, 462+y)
+    click(n=2)
+    return True
+
+
+def click_sulfur():
+
+    def scan_for_sulfur():
+        for _ in range(100):
+            pyautogui.press('left')
+            img = pyautogui.screenshot(
+                region=(590, 462, 100, 100)
+            )
+            pixels = img.load()
+            for y in range(0, 100, 10):
+                for x in range(0, 100, 10):
+                    r, g, _ = pixels[x, y]
+                    if (65 < r < 75) and (55 < g < 65):
+                        return (x, y)
+        return None
+
+    offset_coords = scan_for_sulfur()
+    if not offset_coords:
+        return False
+
+    x, y = offset_coords
+
+    move_mouse(590+x, 462+y)
+    click()
+    move_mouse(590+x+5, 462+y+5)
+    click()
+
+    return True
+
+
 def click_on_map(x, y):
     toggle_map()
     move_mouse(x, y)
@@ -403,6 +469,7 @@ def go_to_isla_prima():
 
 
 def go_to_white_stone():
+    close_map()
     go_to_isla_prima()
     click_on_map(362, 776)
     # wait to walk to ship
@@ -415,7 +482,7 @@ def go_to_desert_pines():
     click_on_map(889, 724)
     # wait to walk to ship
     time.sleep(20)
-    click_flag()
+    click_flag(shitty=True)
 
 
 def go_to_valley_of_the_dwarves():
@@ -424,6 +491,14 @@ def go_to_valley_of_the_dwarves():
     # wait to walk to ship
     time.sleep(20)
     click_flag()
+
+
+def go_to_valley_of_the_dwarves_storage():
+    go_to_valley_of_the_dwarves()
+    click_on_map(434, 380)
+    # wait to walk to storage
+    time.sleep(20)
+    select_sit()
 
 
 def go_to_portland():
@@ -440,7 +515,6 @@ def go_to_crystal_cave():
     # wait to walk across map
     time.sleep(110)
     # enter cave
-    zoom_out()
     move_mouse(620, 219)
     click()
 
@@ -455,21 +529,60 @@ def go_to_crystal_cave_sulfur():
     select_sit()
 
 
+def open_inventory():
+    # inventory already open
+    if locate(UI.Inventory.Banner):
+        return
+    select_inventory()
+
+
+def close_everything():
+    while move_to(UI.Generic.X, click_mode=True):
+        pass
+
+
+def sto_items(items):
+    close_everything()
+
+    # if someone is standing infront of the storage
+    while not locate(UI.Generic.Dialogue):
+        pyautogui.press('left', presses=3)
+        click_storage()
+
+    # open storage
+    move_mouse(720+128, 366+128)
+    move_to(UI.Storage.Open)
+    click(n=2) # not sure why, but gotta double click here?
+
+    open_inventory()
+    for item in items:
+        move_inventory_to_storage(item)
+
+
 def ocr(x, y, dx, dy):
     ss = pyautogui.screenshot(region=(x, y, dx, dy))
     return pytesseract.image_to_string(ss)
 
 
 def get_load_status():
-    try:
-        return int(ocr(546, 849, 23, 13))
-    except ValueError:
-        pass
-    try:
-        return int(ocr(552, 849, 17, 15))
-    except ValueError:
-        pass
-    return None
+    ss = pyautogui.screenshot(region=(546, 849, 24, 12))
+    ss_pixels = ss.load()
+
+    for y in range(12):
+        for x in range(24):
+            r, g, b = ss_pixels[x, y]
+
+            if (r, g, b) == (0, 0, 0):
+                ss.putpixel((x, y), (255, 255, 255))
+            elif r < 60:
+                ss.putpixel((x, y), (255, 255, 255))
+            elif (-5 < (r - g) < 5):
+                ss.putpixel((x, y), (0, 0, 0))
+            else:
+                ss.putpixel((x, y), (255, 255, 255))
+
+    text = pytesseract.image_to_string(ss, config='--psm 7 -c tessedit_char_whitelist=0123456789')
+    return int(text)
 
 
 def get_manufacture_status():
