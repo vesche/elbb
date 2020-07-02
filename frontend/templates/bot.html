@@ -38,6 +38,12 @@
     <form action="/command" method="POST" target="dummyframe">
         <button type="submit" name="command" value="auto_login">Auto Login</button>
     </form>
+
+    <img src="{{ url_for('static', filename='sulfur.png') }}">
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+    <form action="/command" method="POST" target="dummyframe">
+        <button type="submit" name="command" value="auto_sulfur">Auto Sulfur</button>
+    </form>
 </div>
 
 <div id="left-side">

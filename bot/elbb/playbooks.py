@@ -167,5 +167,6 @@ manifest = {
     'noop': noop,
     'auto_fire_essence': start_auto_fire_essence,
     'auto_login': auto_login,
-    'auto_read': auto_read
+    'auto_read': auto_read,
+    'auto_sulfur': auto_sulfur
 }

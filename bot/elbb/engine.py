@@ -324,8 +324,6 @@ def toggle_console():
 def toggle_map():
     # TODO: check if map is already loaded here?
     pyautogui.press('tab')
-    # wait a hair for the map to load
-    time.sleep(.5)
 
 
 def close_map():
@@ -458,6 +456,8 @@ def click_sulfur():
 
 def click_on_map(x, y):
     toggle_map()
+    # wait a hair for the map to load
+    time.sleep(1)
     move_mouse(x, y)
     click()
     toggle_map()
