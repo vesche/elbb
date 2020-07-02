@@ -59,6 +59,5 @@ async def elbb_connect(request, ws):
             task.cancel()
 
 
-def start():
-    print(BANNER)
+def start_server():
     app.run('0.0.0.0', port=51337, protocol=WebSocketProtocol)

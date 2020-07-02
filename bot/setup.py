@@ -20,10 +20,11 @@ setup(
     author_email='vesche@protonmail.com',
     entry_points={
         'console_scripts': [
-            'elbb = elbb.server:start',
+            'elbb = elbb.cli:main',
         ]
     },
     install_requires=[
+        'bpython',
         'filelock',
         'numpy',
         'pyautogui',

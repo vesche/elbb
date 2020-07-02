@@ -22,6 +22,7 @@ conn_root = Connection(
 )
 
 conn_root.run('systemctl stop elbb')
+conn_root.run('killall /usr/bin/python', warn=True)
 conn.run('pip uninstall elbb -y')
 os.system('tar czf bot.tar.gz ../bot/')
 conn.put('bot.tar.gz', 'bot.tar.gz')

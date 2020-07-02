@@ -82,12 +82,14 @@ def click(n=1):
         time.sleep(random.uniform(0.05, 0.3))
 
 
-def move_to(image):
+def move_to(image, click_mode=True):
     location = locate(image)
     if not location:
         return False
     x, y = randomize(location)
     move_mouse(x, y)
+    if click_mode:
+        click()
     return True
 
 
@@ -318,6 +320,123 @@ def eat(food, storage_mode=False):
 
 def toggle_console():
     pyautogui.press('f1')
+
+
+def toggle_map():
+    # TODO: check if map is already loaded here?
+    pyautogui.press('tab')
+    # wait a hair for the map to load
+    time.sleep(.5)
+
+
+def zoom_in(n=1):
+    for _ in range(n):
+        pyautogui.press('pageup')
+
+
+def zoom_out(n=1):
+    for _ in range(n):
+        pyautogui.press('pagedown')
+
+
+def pan_down(n=1):
+    for _ in range(n):
+        pyautogui.press('up')
+
+
+def pan_up(n=1):
+    for _ in range(n):
+        pyautogui.press('down')
+
+
+def click_flag():
+    select_walk()
+    zoom_in(n=30)
+    pan_down(n=10)
+
+    def scan_for_flag():
+        for _ in range(100):
+            pyautogui.press('left')
+            img = pyautogui.screenshot(
+                region=(590, 462, 100, 100)
+            )
+            pixels = img.load()
+            for y in range(0, 100, 10):
+                for x in range(0, 100, 10):
+                    _, _, b = pixels[x, y]
+                    if b > 80:
+                        return (x, y)
+        return None
+
+    offset_coords = scan_for_flag()
+    if not offset_coords:
+        return False
+
+    x, y = offset_coords
+
+    # attempt 1
+    move_mouse(590+x, 462+y)
+    click()
+    move_to(UI.Generic.Close, click_mode=True)
+
+    # attempt 2
+    move_mouse(590+x+5, 462+y+5)
+    click()
+    move_to(UI.Generic.Close, click_mode=True)
+
+    # attempt 3
+    move_mouse(640, 512)
+    click()
+    move_to(UI.Generic.Close, click_mode=True)
+
+    # wait for new map to load
+    time.sleep(3)
+
+    return True
+
+
+def click_on_map(x, y):
+    toggle_map()
+    move_mouse(x, y)
+    click()
+    toggle_map()
+
+
+def go_to_isla_prima():
+    pyautogui.write('#beam me')
+    pyautogui.press('enter')
+
+
+def go_to_white_stone():
+    go_to_isla_prima()
+    click_on_map(362, 776)
+    # wait to walk to ship
+    time.sleep(50)
+    click_flag()
+
+
+def go_to_desert_pines():
+    go_to_white_stone()
+    click_on_map(890, 724)
+    # wait to walk to ship
+    time.sleep(20)
+    click_flag()
+
+
+def go_to_valley_of_the_dwarves():
+    go_to_desert_pines()
+    click_on_map(900, 230)
+    # wait to walk to ship
+    time.sleep(20)
+    click_flag()
+
+
+def go_to_portland():
+    go_to_desert_pines()
+    click_on_map(902, 262)
+    # wait to walk to ship
+    time.sleep(30)
+    click_flag()
 
 
 def ocr(x, y, dx, dy):

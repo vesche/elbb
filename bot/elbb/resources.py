@@ -2,7 +2,7 @@
 
 import os
 
-pwd = os.path.abspath(os.path.dirname(__file__))
+from elbb.common import pwd
 
 
 def resolve(image):
@@ -13,6 +13,10 @@ class UI:
     """
     UI Resources
     """
+
+    class Generic:
+        class Close:
+            path = resolve('generic_close.png')
 
     class Food:
         class NegativeA:

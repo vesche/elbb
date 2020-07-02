@@ -3,7 +3,7 @@ Description=x11vnc %I
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/x11vnc -display %I -rfbport 5901 -forever
+ExecStart=/usr/bin/x11vnc -multiptr -display %I -rfbport 5901 -forever
 
 [Install]
 WantedBy=multi-user.target
