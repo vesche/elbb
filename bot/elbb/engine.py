@@ -567,7 +567,7 @@ def sto_items(items):
     point_north()
 
     # click storage
-    move_mouse(573, 704)
+    move_mouse(530, 680)
     click()
 
     # open storage
