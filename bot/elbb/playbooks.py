@@ -130,22 +130,36 @@ def auto_sulfur():
         engine.close_everything()
         engine.go_to_crystal_cave_sulfur()
 
-        # setup to harvest sulfur
+        # setup camera to harvest sulfur
         engine.zoom_in(n=30)
         engine.pan_up(n=10)
+        engine.zoom_out(n=2)
+        engine.point_south()
+        engine.point_north()
 
         while True:
+            # reset harvesting
+            engine.select_use()
+            engine.move_mouse(150, 150)
+            engine.click()
+
+            # engine.click_sulfur()
+            # TODO: do rando
             engine.select_walk()
-            engine.click_sulfur()
+            engine.move_mouse(818, 618)
+
+            # click strats
+            engine.click()
+            time.sleep(.5)
+            engine.click()
 
             # pause to harvest
-            time.sleep(30)
+            time.sleep(90)
 
             # ensure we didn't teleport
-            engine.click_on_map(532, 164)
-
+            engine.click_on_map(524, 172)
             # wait to move back to harvest spot
-            time.sleep(1)
+            time.sleep(3)
 
             # sit down if moved
             if not engine.locate(UI.Generic.Stand):

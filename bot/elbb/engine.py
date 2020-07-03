@@ -424,40 +424,10 @@ def click_storage():
     return True
 
 
-def click_sulfur():
-
-    def scan_for_sulfur():
-        for _ in range(100):
-            pyautogui.press('left')
-            img = pyautogui.screenshot(
-                region=(590, 462, 100, 100)
-            )
-            pixels = img.load()
-            for y in range(0, 100, 10):
-                for x in range(0, 100, 10):
-                    r, g, _ = pixels[x, y]
-                    if (65 < r < 75) and (55 < g < 65):
-                        return (x, y)
-        return None
-
-    offset_coords = scan_for_sulfur()
-    if not offset_coords:
-        return False
-
-    x, y = offset_coords
-
-    move_mouse(590+x, 462+y)
-    click()
-    move_mouse(590+x+5, 462+y+5)
-    click()
-
-    return True
-
-
 def click_on_map(x, y):
     toggle_map()
     # wait a hair for the map to load
-    time.sleep(1)
+    time.sleep(2)
     move_mouse(x, y)
     click()
     toggle_map()
@@ -523,10 +493,56 @@ def go_to_crystal_cave_sulfur():
     go_to_crystal_cave()
     # wait a sec for cave to load
     time.sleep(1)
-    click_on_map(532, 164)
+    click_on_map(524, 172)
     # wait to walk to sulfur
     time.sleep(25)
     select_sit()
+
+
+def spin_compass(comp_x, comp_y):
+    for _ in range(100):
+        pyautogui.press('left')
+        img = pyautogui.screenshot(
+            region=(comp_x, comp_y, 16, 16)
+        )
+        pixels = img.load()
+        for y in range(16):
+            for x in range(16):
+                r, g, b = pixels[x, y]
+                if (r == 255) and (g == 255):
+                    return
+
+
+def point_north():
+    spin_compass(1116, 840)
+
+
+def point_north_east():
+    spin_compass(1135, 852)
+
+
+def point_east():
+    spin_compass(1135, 858)
+
+
+def point_south_east():
+    spin_compass(1132, 876)
+
+
+def point_south():
+    spin_compass(1117, 882)
+
+
+def point_south_west():
+    spin_compass(1096, 872)
+
+
+def point_west():
+    spin_compass(1092, 853)
+
+
+def point_north_west():
+    spin_compass(1101, 839)
 
 
 def open_inventory():

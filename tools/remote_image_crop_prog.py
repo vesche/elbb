@@ -44,7 +44,8 @@ def get_coords(mouse):
 
     x = mouse.x
     y = mouse.y
-    print(x, y)
+    print(f'Relative: ({x}, {y})')
+    print(f'Actual:   ({x+128}, {y+128})')
 
     if PIN_1_SELECTED:
         PIN_1_SELECTED = False
