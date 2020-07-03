@@ -560,10 +560,15 @@ def close_everything():
 def sto_items(items):
     close_everything()
 
-    # if someone is standing infront of the storage
-    while not locate(UI.Generic.Dialogue):
-        pyautogui.press('left', presses=3)
-        click_storage()
+    # fix for storage
+    zoom_in(n=30)
+    pan_up(n=10)
+    point_south()
+    point_north()
+
+    # click storage
+    move_mouse(573, 704)
+    click()
 
     # open storage
     move_mouse(720+128, 366+128)

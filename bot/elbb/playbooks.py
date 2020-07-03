@@ -128,6 +128,7 @@ def auto_sulfur():
 
     while True:
         engine.close_everything()
+        log('Heading to crystal cavern!')
         engine.go_to_crystal_cave_sulfur()
 
         # setup camera to harvest sulfur
@@ -154,6 +155,7 @@ def auto_sulfur():
             engine.click()
 
             # pause to harvest
+            log('Harvesting...')
             time.sleep(90)
 
             # ensure we didn't teleport
@@ -169,8 +171,10 @@ def auto_sulfur():
             if engine.get_load_status() < 4:
                 break
 
+        log('Overweighted... Going to storage!')
         engine.go_to_valley_of_the_dwarves_storage()
         engine.sto_items([Items.Sulfur])
+        log('Stored sulfur!')
 
 
 def noop():
