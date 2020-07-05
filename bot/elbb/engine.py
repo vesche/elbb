@@ -576,6 +576,10 @@ def sto_items(items):
     click(n=2) # not sure why, but gotta double click here?
 
     open_inventory()
+
+    # select 100
+    move_to(UI.Inventory.OneHundred, click_mode=True)
+
     for item in items:
         move_inventory_to_storage(item)
 

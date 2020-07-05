@@ -33,6 +33,8 @@ class UI:
     class Inventory:
         class Banner:
             path = resolve('inventory_banner.png')
+        class OneHundred:
+            path = resolve('inventory_100.png')
 
     class Manufacture:
         class Banner:

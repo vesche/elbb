@@ -1,4 +1,4 @@
-# elbb Deployment
+# elbb Deploy
 
 Automated deployment script for elbb bot on a remote Linode VPS using fabric :D
 
