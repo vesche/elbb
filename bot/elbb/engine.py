@@ -426,8 +426,8 @@ def click_storage():
 
 def click_on_map(x, y):
     toggle_map()
-    # wait a hair for the map to load
-    time.sleep(2)
+    # wait a bit for the map to load
+    time.sleep(5)
     move_mouse(x, y)
     click()
     toggle_map()
@@ -581,7 +581,7 @@ def sto_items(items):
     move_to(UI.Inventory.OneHundred, click_mode=True)
 
     for item in items:
-        move_inventory_to_storage(item)
+        move_inventory_to_storage(item, n=2)
 
 
 def ocr(x, y, dx, dy):
