@@ -27,7 +27,7 @@ setup(
         'bpython',
         'filelock',
         'numpy',
-        'pyautogui',
+        'pyautogui==0.9.52',
         'pytesseract',
         'sanic',
         'scipy'
